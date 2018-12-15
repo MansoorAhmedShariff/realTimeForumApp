@@ -14,17 +14,13 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
-    }
+        $Questions = Question::latest()->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        if($Questions != null){
+            return response()->json(['message' => 'True','Questions'=>$Questions]);
+         }else{
+            return response()->json(['message'=>'No Questions Found']);
+         }
     }
 
     /**
@@ -35,30 +31,24 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //auth()->user()->question()->create($request-all());
+        Question::create($request->all());
+        return response()->json("Created Successfully", 200);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Model\Question  $questions
+     * @param  \App\Model\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function show(Question $questions)
+    public function show(Question $question)
     {
-        //
+        return $question;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Model\Question  $questions
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Question $questions)
-    {
-        //
-    }
+    
+    
 
     /**
      * Update the specified resource in storage.
@@ -75,11 +65,12 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Model\Question  $questions
+     * @param  \App\Model\Question  $question
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Question $questions)
+    public function destroy(Question $question)
     {
-        //
+        $question->delete();
+        return response()->json("Deleted", 200);
     }
 }
