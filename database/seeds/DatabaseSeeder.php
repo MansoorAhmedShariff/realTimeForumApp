@@ -17,9 +17,9 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         factory(User::class, 10)->create();
-        factory(Category::class, 5)->create();
-        factory(Question::class, 50)->create();
-        factory(Reply::class, 10)->create()->each(function ($reply){
+        factory(Category::class, 10)->create();
+        factory(Question::class, 25)->create();
+        factory(Reply::class, 100)->create()->each(function ($reply){
             return $reply->like()->save(factory(Like::class)->make());
         });
     }

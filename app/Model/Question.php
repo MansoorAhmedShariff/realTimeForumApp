@@ -9,9 +9,9 @@ class Question extends Model
 {
     //In order to get a single question to 'SHOW' or 'DELETE' in QuestionController,
     //We can pass the key name that we will provide (Below Example We should pass slug to search)
-    public function getRouteKeyName(){
+    /* public function getRouteKeyName(){
         return 'slug';
-    }
+    } */
 
     //Specify Request Names To Accept
     //protected $fillable = ['title','slug','body','category_id','user_id'];
