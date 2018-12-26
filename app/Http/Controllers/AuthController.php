@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Http\Requests\SignUpRequest;
 
 class AuthController extends Controller
 {
@@ -59,7 +60,7 @@ class AuthController extends Controller
         return response()->json(['message' => 'Successfully logged out']);
     }
 
-    public function signup(Request $request){
+    public function signup(SignUpRequest $request){
         User::create($request->all());
         return $this->login($request);
     }
@@ -86,7 +87,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => $this->guard()->factory()->getTTL() * 60
+            'expires_in' => $this->guard()->factory()->getTTL() * 60,
+            'username' => auth()->user()->name
         ]);
     }
 
