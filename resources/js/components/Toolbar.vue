@@ -1,10 +1,11 @@
 <template>
-  <v-toolbar>
+  <v-toolbar color="red darken-1" class="white--text">
     <!-- <v-toolbar-side-icon></v-toolbar-side-icon> -->
     <v-toolbar-title>RealTime Forum</v-toolbar-title>
     <v-spacer></v-spacer>
     <div class="hidden-sm-and-down">
       <router-link 
+      class="white--text"
       v-for="item in items"
       :key="item.title"
       :to="item.to"

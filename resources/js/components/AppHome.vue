@@ -1,9 +1,11 @@
 <template>
+<v-container fluid>
 <div>
     <toolbar></toolbar>
     <router-view></router-view>
-    <app-footer></app-footer>
 </div>
+    <app-footer bottom absolute></app-footer>
+</v-container>
 </template>
 
 

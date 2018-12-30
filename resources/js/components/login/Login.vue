@@ -44,7 +44,6 @@ export default {
     methods:{
         login(){
             User.login(this.form)
-
         }
     }
 
