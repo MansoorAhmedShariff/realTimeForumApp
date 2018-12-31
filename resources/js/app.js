@@ -11,6 +11,11 @@ window.Vue = require('vue');
 
 import Vue from 'vue';
 import Vuetify from 'vuetify';
+import VueSimplemde from 'vue-simplemde'
+import 'simplemde/dist/simplemde.min.css'
+
+Vue.use(VueSimplemde)
+
 import AppHome from './components/AppHome';
 import router from './router/router.js';
 import User from './helpers/User.js';

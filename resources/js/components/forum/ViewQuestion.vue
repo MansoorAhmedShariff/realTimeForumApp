@@ -1,6 +1,6 @@
 <template>
     <show-question
-    :question = question
+    :question = questions
     ></show-question>
 </template>
 
@@ -10,15 +10,15 @@ export default {
     components:{ShowQuestion},
     data(){
         return{
-            question:{}
+            questions:{}
         }
     },
     created(){
-        console.log('/api/question/'+this.$route.params.id)
         axios.get('/api/question/'+this.$route.params.id)
-        .then(res => this.question = res.data.Question)
+        .then(res => this.questions = res.data.Question)
         .catch(error => console.log(error.response.data))
     }
+    
 
 }
 </script>
