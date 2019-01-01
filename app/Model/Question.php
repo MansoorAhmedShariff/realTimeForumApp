@@ -14,10 +14,11 @@ class Question extends Model
     } */
 
     //Specify Request Names To Accept
-    //protected $fillable = ['title','slug','body','category_id','user_id'];
 
     //Accept All Request Values
-    protected $guarded = [];
+    //protected $guarded = [];
+
+    protected $fillable = ['title', 'slug', 'body', 'user_id', 'category_id'];
 
     public function user(){
         return $this->belongsTo(User::class);

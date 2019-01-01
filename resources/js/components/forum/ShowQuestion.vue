@@ -25,10 +25,10 @@
             </v-card>
 
             <v-card-actions v-if="own">
-                <v-btn icon small>
+                <v-btn icon small @click="edit">
                     <v-icon color="black">edit</v-icon>
                 </v-btn>
-                 <v-btn icon small>
+                 <v-btn icon small @click="destroy">
                     <v-icon color="red">delete</v-icon>
                 </v-btn>
             </v-card-actions>
@@ -46,7 +46,7 @@ export default {
     watch: {
     question (n, o) {
       //console.log(n,o) // n is the new value, o is the old value.
-      console.log(n.user_id);
+      //console.log(n.user_id);
       this.own = User.own(n.user_id);
       
     }
@@ -58,6 +58,14 @@ export default {
         //console.log(this.question.body)
     },
     methods:{
+        destroy(){
+        axios.delete('/api/question/'+this.question.id)
+        .then(res => this.$router.push('/forum'))
+        .catch(error => console.log(error.response.data))
+        },
+        edit(){
+            EventBus.$emit('startEditing')
+        }
     },
     computed:{
         body(){
