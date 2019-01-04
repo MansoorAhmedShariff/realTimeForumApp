@@ -9,9 +9,9 @@
                 :question=question></question>
                 <v-spacer></v-spacer>
             </v-flex>
-            <v-flex xs1>
+            <v-flex xs4>
+               <sidebar class="ml-4"></sidebar>
             </v-flex>
-                Sidebar Here
         </v-layout>
     </v-container>
 </template>
@@ -19,13 +19,14 @@
 <script>
 
 import question from './Question'
+import sidebar from './AppSidebar'
 export default {
     data(){
         return{
             questions:{}
         }
     },
-    components:{question},
+    components:{question, sidebar},
     created(){
         axios.get('api/question')
         .then(res => this.questions = res.data.Questions)

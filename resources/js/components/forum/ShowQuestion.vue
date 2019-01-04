@@ -18,7 +18,7 @@
                 bottom
                 right
                 class="mb-1">
-                  ... Replies
+                  {{question.replies_count}} Replies
             </v-btn>
               </v-layout>
               

@@ -32,8 +32,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        Category::create($request->all());
-        return response()->json("Created Successfully", 200);
+        $request['slug'] = str_slug($request->name);
+        $category = Category::create($request->all());
+        return response()->json(new CategoryResource($category), 200);
     }
 
     /**
@@ -58,8 +59,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
+        $request['slug'] = str_slug($request->name);
         $category->update($request->all());
-        return response()->json("Updated Successfully", 200);
+        return response()->json(new CategoryResource($category), 200);
     }
 
     /**

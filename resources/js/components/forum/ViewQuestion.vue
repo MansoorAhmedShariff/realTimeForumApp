@@ -1,12 +1,16 @@
 <template>
 <div>
     <edit-question v-if="editing"
-    :question = questions>
+    :question = question>
     </edit-question>
     <div v-else>
     <show-question
-        :question = questions
+        :question = question
     ></show-question>
+    <v-container>
+    <replies :replies="question.replies"></replies>
+    <new-reply :questionID="question.id"></new-reply>
+    </v-container>
     </div>
 </div>
 </template>
@@ -14,11 +18,13 @@
 <script>
 import EditQuestion from './EditQuestion'
 import ShowQuestion from './ShowQuestion'
+import Replies from './Replies'
+import NewReply from './NewReply'
 export default {
-    components:{ShowQuestion, EditQuestion},
+    components:{ShowQuestion, EditQuestion, Replies, NewReply},
     data(){
         return{
-            questions:{},
+            question:{},
             editing:false
         }
     },
@@ -37,7 +43,7 @@ export default {
         },
         getQuestion(){
             axios.get('/api/question/'+this.$route.params.id)
-            .then(res => this.questions = res.data.Question)
+            .then(res => this.question = res.data.Question)
             .catch(error => console.log(error.response.data))
         }
     }
