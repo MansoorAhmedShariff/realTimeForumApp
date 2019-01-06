@@ -96008,7 +96008,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96037,11 +96037,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['replies'],
-    components: { Reply: __WEBPACK_IMPORTED_MODULE_0__Reply___default.a }
+    components: { Reply: __WEBPACK_IMPORTED_MODULE_0__Reply___default.a },
+    data: function data() {
+        return {
+            content: this.replies
+        };
+    },
+
+    watch: {
+        replies: function replies(n, o) {
+            //console.log(n,o) // n is the new value, o is the old value.
+            //console.log(n.user_id);
+            this.content = n;
+        }
+    },
+    created: function created() {
+        this.listen();
+    },
+
+    methods: {
+        listen: function listen() {
+            var _this = this;
+
+            EventBus.$on('newReply', function (reply) {
+                _this.replies.push(reply);
+            });
+        }
+    }
 
 });
 
@@ -96067,13 +96095,18 @@ var render = function() {
         1
       ),
       _vm._v(" "),
-      _vm._l(_vm.replies, function(reply) {
-        return _vm.replies
-          ? _c("reply", { key: reply.id, attrs: { reply: reply } })
-          : _vm._e()
-      })
+      _c(
+        "v-card",
+        { attrs: { color: "teal darken-3" } },
+        _vm._l(_vm.replies, function(reply) {
+          return _vm.replies
+            ? _c("reply", { key: reply.id, attrs: { reply: reply } })
+            : _vm._e()
+        }),
+        1
+      )
     ],
-    2
+    1
   )
 }
 var staticRenderFns = []
@@ -96172,7 +96205,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96183,6 +96216,11 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
 //
 //
 //
@@ -96249,103 +96287,80 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
+    "v-container",
     [
       _c(
         "v-card",
-        { attrs: { color: "teal darken-3" } },
+        { staticClass: "mx-auto", attrs: { color: "white" } },
         [
+          _c("v-card-text", { staticClass: "title black--text" }, [
+            _vm._v("\r\n      " + _vm._s(_vm.reply.body) + "\r\n    ")
+          ]),
+          _vm._v(" "),
+          _c("v-card-title", { staticClass: "black--text" }, [
+            _c("span", [
+              _vm._v(
+                _vm._s(_vm.reply.user) + " said " + _vm._s(_vm.reply.created_at)
+              )
+            ])
+          ]),
+          _vm._v(" "),
           _c(
-            "v-card-title",
+            "v-card-actions",
             [
               _c(
-                "v-card",
-                { staticStyle: { position: "relative" } },
+                "v-list-tile",
+                { staticClass: "grow" },
                 [
-                  _c(
-                    "v-layout",
-                    [
-                      _c(
-                        "v-flex",
+                  _vm.own
+                    ? _c(
+                        "v-card-actions",
                         [
                           _c(
-                            "v-card-title",
-                            { attrs: { "primary-title": "" } },
+                            "v-btn",
+                            { attrs: { icon: "", small: "" } },
                             [
-                              _c(
-                                "div",
-                                [
-                                  _c("v-layout", { attrs: { "mb-2": "" } }, [
-                                    _c("div", [_vm._v(_vm._s(_vm.reply.body))])
-                                  ]),
-                                  _vm._v(" "),
-                                  _c("v-divider"),
-                                  _vm._v(" "),
-                                  _c(
-                                    "v-layout",
-                                    {
-                                      attrs: { "mt-2": "", "fill-height": "" }
-                                    },
-                                    [
-                                      _vm.own
-                                        ? _c(
-                                            "v-card-actions",
-                                            [
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: { icon: "", small: "" }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-icon",
-                                                    {
-                                                      attrs: { color: "black" }
-                                                    },
-                                                    [_vm._v("edit")]
-                                                  )
-                                                ],
-                                                1
-                                              ),
-                                              _vm._v(" "),
-                                              _c(
-                                                "v-btn",
-                                                {
-                                                  attrs: { icon: "", small: "" }
-                                                },
-                                                [
-                                                  _c(
-                                                    "v-icon",
-                                                    { attrs: { color: "red" } },
-                                                    [_vm._v("delete")]
-                                                  )
-                                                ],
-                                                1
-                                              )
-                                            ],
-                                            1
-                                          )
-                                        : _vm._e(),
-                                      _vm._v(" "),
-                                      _c("v-spacer"),
-                                      _vm._v(" "),
-                                      _c("div", { staticClass: "grey--text" }, [
-                                        _vm._v(
-                                          _vm._s(_vm.reply.user) +
-                                            " said " +
-                                            _vm._s(_vm.reply.created_at)
-                                        )
-                                      ])
-                                    ],
-                                    1
-                                  )
-                                ],
-                                1
-                              )
-                            ]
+                              _c("v-icon", { attrs: { color: "black" } }, [
+                                _vm._v("edit")
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            { attrs: { icon: "", small: "" } },
+                            [
+                              _c("v-icon", { attrs: { color: "red" } }, [
+                                _vm._v("delete")
+                              ])
+                            ],
+                            1
                           )
                         ],
                         1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c(
+                    "v-layout",
+                    { attrs: { "align-center": "", "justify-end": "" } },
+                    [
+                      _c(
+                        "v-btn",
+                        { staticClass: "mr-1", attrs: { icon: "", small: "" } },
+                        [
+                          _c("v-icon", { attrs: { color: "grey" } }, [
+                            _vm._v("thumb_up_alt")
+                          ])
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        { staticClass: "subheading mr-2 black--text" },
+                        [_vm._v("0")]
                       )
                     ],
                     1
@@ -96459,7 +96474,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96498,8 +96513,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['questionID'],
     methods: {
         submit: function submit() {
+            var _this = this;
+
             axios.post('/api/question/' + this.questionID + '/reply', this.form).then(function (res) {
-                return console.log(res.data);
+                console.log(res.data.reply);
+                _this.form.body = '';
+                EventBus.$emit('newReply', res.data.reply);
             });
         }
     }

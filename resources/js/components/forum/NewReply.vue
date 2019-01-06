@@ -26,7 +26,12 @@ export default {
     methods:{
         submit(){
             axios.post('/api/question/'+this.questionID+'/reply', this.form)
-            .then(res => console.log(res.data))
+            .then(res => {
+                console.log(res.data.reply)
+                this.form.body=''
+                EventBus.$emit('newReply', res.data.reply)
+            })
+            
         }
     }
 }

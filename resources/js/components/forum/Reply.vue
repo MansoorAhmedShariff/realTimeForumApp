@@ -1,19 +1,22 @@
 <template>
-    <div>
-        <v-card color="teal darken-3">
-            <v-card-title>
-                <v-card
-            style="position: relative">
-              <v-layout>
-                <v-flex>
-                  <v-card-title primary-title>
-                    <div>
-                        <v-layout mb-2>
-                      <div>{{reply.body}}</div>
-                        </v-layout>
-                      <v-divider></v-divider>
-                      <v-layout mt-2 fill-height>
-                          <v-card-actions  v-if="own">
+<v-container>
+    <v-card
+    class="mx-auto"
+    color="white"
+  >
+
+    <v-card-text class="title black--text">
+      {{reply.body}}
+    </v-card-text>
+
+    <v-card-title class="black--text">
+      <span>{{reply.user}} said {{reply.created_at}}</span>
+    </v-card-title>
+
+    <v-card-actions>
+      <v-list-tile class="grow">
+
+        <v-card-actions  v-if="own">
                 <v-btn icon small>
                     <v-icon color="black">edit</v-icon>
                 </v-btn>
@@ -21,18 +24,20 @@
                     <v-icon color="red">delete</v-icon>
                 </v-btn>
             </v-card-actions>
-            <v-spacer></v-spacer>
-                      <div class="grey--text">{{reply.user}} said {{reply.created_at}}</div>
-                      </v-layout>
-                    </div>
-                  </v-card-title>
-                </v-flex>
-              </v-layout>
-              
-            </v-card>
-            </v-card-title>
-        </v-card>
-    </div>
+
+        <v-layout
+          align-center
+          justify-end
+        >
+          <v-btn icon small class="mr-1">
+                    <v-icon color="grey">thumb_up_alt</v-icon>
+                </v-btn>
+          <span class="subheading mr-2 black--text">0</span>
+        </v-layout>
+      </v-list-tile>
+    </v-card-actions>
+  </v-card>
+  </v-container>
 </template>
 
 <script>

@@ -34,8 +34,8 @@ class ReplyController extends Controller
     public function store(Question $question, Request $request)
     {
         //
-        $question->replies()->create($request->all());
-        return response()->json("Created Successfully", 200);
+        $reply = $question->replies()->create($request->all());
+        return response(["reply" => new ReplyResource($reply)], 200);
     }
 
     /**
