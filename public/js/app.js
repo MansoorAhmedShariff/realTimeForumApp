@@ -75883,7 +75883,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -75902,6 +75902,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Replies___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Replies__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewReply__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__NewReply___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__NewReply__);
+//
 //
 //
 //
@@ -75982,7 +75983,12 @@ var render = function() {
               _c(
                 "v-container",
                 [
-                  _c("replies", { attrs: { replies: _vm.question.replies } }),
+                  _c("replies", {
+                    attrs: {
+                      replies: _vm.question.replies,
+                      QID: _vm.question.id
+                    }
+                  }),
                   _vm._v(" "),
                   _c("new-reply", { attrs: { questionID: _vm.question.id } })
                 ],
@@ -96008,7 +96014,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96039,14 +96045,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['replies'],
+    props: ['replies', 'QID'],
     components: { Reply: __WEBPACK_IMPORTED_MODULE_0__Reply___default.a },
     data: function data() {
         return {
-            content: this.replies
+            content: this.replies,
+            QuestionID: this.QID
         };
     },
 
@@ -96055,6 +96063,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //console.log(n,o) // n is the new value, o is the old value.
             //console.log(n.user_id);
             this.content = n;
+        },
+        QID: function QID(n, o) {
+            this.QuestionID = n;
         }
     },
     created: function created() {
@@ -96067,6 +96078,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             EventBus.$on('newReply', function (reply) {
                 _this.replies.push(reply);
+            });
+
+            EventBus.$on('deleteReply', function (index) {
+                //console.log('/api/question/'+this.QuestionID+'/reply/'+this.replies[index].id);
+
+                axios.delete('/api/question/' + _this.QuestionID + '/reply/' + _this.replies[index].id).then(function (res) {
+                    _this.replies.splice(index, 1);
+                });
             });
         }
     }
@@ -96098,9 +96117,12 @@ var render = function() {
       _c(
         "v-card",
         { attrs: { color: "teal darken-3" } },
-        _vm._l(_vm.replies, function(reply) {
+        _vm._l(_vm.replies, function(reply, index) {
           return _vm.replies
-            ? _c("reply", { key: reply.id, attrs: { reply: reply } })
+            ? _c("reply", {
+                key: reply.id,
+                attrs: { index: index, reply: reply }
+              })
             : _vm._e()
         }),
         1
@@ -96205,7 +96227,7 @@ exports = module.exports = __webpack_require__(2)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -96260,7 +96282,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['reply'],
+    props: ['reply', 'index'],
     data: function data() {
         return {
             own: User.own(this.reply.user_id)
@@ -96273,6 +96295,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //console.log(n,o) // n is the new value, o is the old value.
             //console.log(n.user_id);
             this.own = User.own(n.user_id);
+        }
+    },
+    methods: {
+        destroy: function destroy() {
+            EventBus.$emit('deleteReply', this.index);
         }
     }
 
@@ -96329,7 +96356,10 @@ var render = function() {
                           _vm._v(" "),
                           _c(
                             "v-btn",
-                            { attrs: { icon: "", small: "" } },
+                            {
+                              attrs: { icon: "", small: "" },
+                              on: { click: _vm.destroy }
+                            },
                             [
                               _c("v-icon", { attrs: { color: "red" } }, [
                                 _vm._v("delete")

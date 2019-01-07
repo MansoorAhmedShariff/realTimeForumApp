@@ -8,7 +8,8 @@
         :question = question
     ></show-question>
     <v-container>
-    <replies :replies="question.replies"></replies>
+    <replies :replies="question.replies"
+    :QID="question.id"></replies>
     <new-reply :questionID="question.id"></new-reply>
     </v-container>
     </div>

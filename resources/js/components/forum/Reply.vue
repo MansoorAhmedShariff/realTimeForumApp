@@ -20,7 +20,7 @@
                 <v-btn icon small>
                     <v-icon color="black">edit</v-icon>
                 </v-btn>
-                 <v-btn icon small>
+                 <v-btn icon small @click="destroy">
                     <v-icon color="red">delete</v-icon>
                 </v-btn>
             </v-card-actions>
@@ -42,7 +42,7 @@
 
 <script>
 export default {
-    props:['reply'],
+    props:['reply', 'index'],
     data(){
         return{
             own : User.own(this.reply.user_id)
@@ -57,6 +57,11 @@ export default {
       this.own = User.own(n.user_id);
     }
   },
+  methods:{
+      destroy(){
+          EventBus.$emit('deleteReply', this.index)
+      }
+  }
 
 }
 </script>
