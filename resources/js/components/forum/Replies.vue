@@ -49,7 +49,6 @@ export default {
 
             EventBus.$on('deleteReply', (index) =>{
                 //console.log('/api/question/'+this.QuestionID+'/reply/'+this.replies[index].id);
-                
                 axios.delete('/api/question/'+this.QuestionID+'/reply/'+this.replies[index].id)
                 .then(res => {
                     this.replies.splice(index, 1)
