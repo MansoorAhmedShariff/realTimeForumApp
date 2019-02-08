@@ -30,7 +30,7 @@
           align-center
           justify-end
         >
-          <like v-if="!own"></like>
+          <like :data = "reply"></like>
         </v-layout>
       </v-list-tile>
     </v-card-actions>

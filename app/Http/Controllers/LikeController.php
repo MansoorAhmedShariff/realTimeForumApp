@@ -10,7 +10,6 @@ class LikeController extends Controller
 {
    public function Like(Reply $reply, Request $request){
         $reply->like()->create([
-            //'user_id' => auth()->id()
             'user_id' => $request->user_id
            ]);
         return response()->json("Added Successfully", 200);
