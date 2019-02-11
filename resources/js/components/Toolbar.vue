@@ -13,13 +13,19 @@
         <v-btn flat class="white--text">{{item.title}}</v-btn>
       </router-link>
     </div>
+    <app-notification v-if="loggedIn"></app-notification>
   </v-toolbar>
 </template>
 
 <script>
+import AppNotification from './AppNotification'
 export default {
+  components:{
+    AppNotification
+  },
   data(){
     return{
+      loggedIn: User.loggedIn(),
       items:[
         {title : 'Forum', to: '/forum', show: true},
         {title : 'Ask Question', to: '/ask', show: User.loggedIn()},

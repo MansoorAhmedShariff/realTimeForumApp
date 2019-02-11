@@ -90122,7 +90122,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -90133,6 +90133,9 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AppNotification__ = __webpack_require__(171);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__AppNotification___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__AppNotification__);
+//
 //
 //
 //
@@ -90152,9 +90155,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    AppNotification: __WEBPACK_IMPORTED_MODULE_0__AppNotification___default.a
+  },
   data: function data() {
     return {
+      loggedIn: User.loggedIn(),
       items: [{ title: 'Forum', to: '/forum', show: true }, { title: 'Ask Question', to: '/ask', show: User.loggedIn() }, { title: 'Category', to: '/category', show: User.admin() }, { title: 'Login', to: '/login', show: !User.loggedIn() }, { title: 'Logout', to: '/logout', show: User.loggedIn() }]
     };
   },
@@ -90205,7 +90213,9 @@ var render = function() {
             : _vm._e()
         }),
         1
-      )
+      ),
+      _vm._v(" "),
+      _vm.loggedIn ? _c("app-notification") : _vm._e()
     ],
     1
   )
@@ -95907,7 +95917,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -95939,20 +95949,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 body: null,
                 user_id: User.id(),
                 question_id: this.questionID
+            },
+            notitfys: {
+                type: "App\\Notifications\\NewReply",
+                notifiable_type: "App\\User",
+                user_id: this.userID,
+                data: null
             }
         };
     },
 
-    props: ['questionID'],
+    props: ['questionID', 'userID'],
     methods: {
         submit: function submit() {
             var _this = this;
 
+            this.notitfys.data = '{"replyBy":"' + User.name() + '","question":"' + this.form.body + '","path":"' + this.questionID + '"}';
             axios.post('/api/question/' + this.questionID + '/reply', this.form).then(function (res) {
                 console.log(res.data.reply);
                 _this.form.body = '';
                 EventBus.$emit('newReply', res.data.reply);
+
+                _this.notify();
             });
+            /* console.log(this.form) console.log(this.notitfys); */
+        },
+        notify: function notify() {
+            axios.post('/api/notify', this.notitfys).then(function (res) {
+                console.log(res);
+            });
+        }
+    },
+    watch: {
+        questionID: function questionID(n, o) {
+            //console.log(n,o) // n is the new value, o is the old value.
+            //console.log(n.user_id);
+            this.form.question_id = n;
+            this.notitfys.data.path = n;
+        },
+        userID: function userID(n, o) {
+            this.notitfys.user_id = n;
         }
     }
 });
@@ -96031,7 +96067,12 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("new-reply", { attrs: { questionID: _vm.question.id } })
+                  _c("new-reply", {
+                    attrs: {
+                      questionID: _vm.question.id,
+                      userID: _vm.question.user_id
+                    }
+                  })
                 ],
                 1
               )
@@ -96983,6 +97024,251 @@ var AppStorage = function () {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+function injectStyle (ssrContext) {
+  if (disposed) return
+  __webpack_require__(172)
+}
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(174)
+/* template */
+var __vue_template__ = __webpack_require__(175)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = injectStyle
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/js/components/AppNotification.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-14f98411", Component.options)
+  } else {
+    hotAPI.reload("data-v-14f98411", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 172 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(173);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(2)("7cf3bdab", content, false, {});
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-14f98411\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppNotification.vue", function() {
+     var newContent = require("!!../../../node_modules/css-loader/index.js!../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-14f98411\",\"scoped\":false,\"hasInlineConfig\":true}!../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./AppNotification.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 173 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(0)(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 174 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            read: {},
+            unread: {},
+            unread_count: 0,
+            User_Id: User.id()
+        };
+    },
+    created: function created() {
+        if (User.loggedIn()) {
+            this.getNotifications();
+        }
+    },
+
+    methods: {
+        getNotifications: function getNotifications() {
+            var _this = this;
+
+            axios.get('/api/notif/' + this.User_Id).then(function (res) {
+                _this.read = res.data.Read;
+                _this.unread = res.data.Unread;
+                _this.unread_count = res.data.Unread.length;
+            });
+        }
+    }
+
+});
+
+/***/ }),
+/* 175 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "text-xs-center" },
+    [
+      _c(
+        "v-menu",
+        {
+          attrs: {
+            bottom: "",
+            origin: "center center",
+            transition: "scale-transition"
+          }
+        },
+        [
+          _c(
+            "v-btn",
+            {
+              staticClass: "mr-1",
+              attrs: { slot: "activator", icon: "" },
+              slot: "activator"
+            },
+            [
+              _c(
+                "v-icon",
+                { staticClass: "white--text", attrs: { color: "white" } },
+                [_vm._v("notification_important")]
+              ),
+              _vm._v(" " + _vm._s(_vm.unread_count) + "\n            ")
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-list",
+            [
+              _vm._l(_vm.unread, function(item) {
+                return _c(
+                  "v-list-tile",
+                  { key: item.id },
+                  [
+                    _c("v-list-tile-title", [
+                      _vm._v(_vm._s(item.data.question))
+                    ])
+                  ],
+                  1
+                )
+              }),
+              _vm._v(" "),
+              _c("v-divider"),
+              _vm._v(" "),
+              _vm._l(_vm.read, function(item) {
+                return _c(
+                  "v-list-tile",
+                  { key: item.id },
+                  [
+                    _c("v-list-tile-title", [
+                      _vm._v(_vm._s(item.data.question))
+                    ])
+                  ],
+                  1
+                )
+              })
+            ],
+            2
+          )
+        ],
+        1
+      )
+    ],
+    1
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-14f98411", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

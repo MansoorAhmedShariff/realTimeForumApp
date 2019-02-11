@@ -10,7 +10,7 @@
     <v-container>
     <replies :replies="question.replies"
     :QID="question.id"></replies>
-    <new-reply :questionID="question.id"></new-reply>
+    <new-reply :questionID="question.id" :userID="question.user_id"></new-reply>
     </v-container>
     </div>
 </div>

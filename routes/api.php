@@ -1,10 +1,16 @@
 <?php
 
+
 Route::apiResource('/question', 'QuestionController');
 Route::apiResource('/category', 'CategoryController');
 Route::apiResource('/question/{question}/reply', 'ReplyController');
 Route::post('like/{reply}', 'LikeController@Like');
 Route::delete('like/{reply}', 'LikeController@Unlike');
+
+Route::get('/notif/{user}', 'NotifController@index');
+Route::post('/notify', 'NotifController@store');
+Route::post('/notifyupdate/{user}', 'NotifController@update');
+Route::delete('/notifdelete/{user}', 'NotifController@destroy');
 
 Route::group([
 

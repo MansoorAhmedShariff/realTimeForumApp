@@ -6,6 +6,7 @@ use App\Model\Reply;
 use App\Model\Question;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReplyResource;
+use App\Notifications\NewReplyNotification;
 
 class ReplyController extends Controller
 {
@@ -35,6 +36,7 @@ class ReplyController extends Controller
     {
         //
         $reply = $question->replies()->create($request->all());
+        $user = $question->user;
         return response(["reply" => new ReplyResource($reply)], 200);
     }
 
