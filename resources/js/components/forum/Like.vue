@@ -14,10 +14,7 @@ export default {
         return{
             liked:this.data.liked,
             count:this.data.like_count,
-            u_id: User.id(),
-            form:{
-                user_id: User.id()
-            }
+            u_id: User.id()
         }
     },
     computed:{
@@ -32,7 +29,7 @@ export default {
             }
         },
         increment(){
-            axios.post('/api/like/'+this.data.id, this.form)
+            axios.post('/api/like/'+this.data.id, this.u_id)
             .then(this.count ++)
         },
         decrement(){

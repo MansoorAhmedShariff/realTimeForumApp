@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\Notif;
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Resources\NotifResource;
 
 class NotifController extends Controller
 {
@@ -17,8 +18,8 @@ class NotifController extends Controller
     {
         //$user_id = $request->user_id;
         $Notifications = $user->notif;
-        $Unread = $user->notif->where('read_at', "=", null);
-        $Read = $user->notif->where('read_at', "!=", null);
+        $Unread = NotifResource::collection($user->notif->where('read_at', "=", null));
+        $Read = NotifResource::collection($user->notif->where('read_at', "!=", null));
 
         if($Notifications != null){
             return response()->json(['message'=>'Notifications Found', 'Unread'=>$Unread, 'Read'=>$Read]);
@@ -61,7 +62,8 @@ class NotifController extends Controller
      */
     public function update(Request $request, Notif $notif)
     {
-        //
+        $notif->update($request->all());
+        return response()->json("Updated Successfully", 200);
     }
 
     /**

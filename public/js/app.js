@@ -95580,7 +95580,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -95607,10 +95607,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             liked: this.data.liked,
             count: this.data.like_count,
-            u_id: User.id(),
-            form: {
-                user_id: User.id()
-            }
+            u_id: User.id()
         };
     },
 
@@ -95627,7 +95624,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
         },
         increment: function increment() {
-            axios.post('/api/like/' + this.data.id, this.form).then(this.count++);
+            axios.post('/api/like/' + this.data.id, this.u_id).then(this.count++);
         },
         decrement: function decrement() {
             axios.delete('/api/like/' + this.data.id + '?user_id=' + this.u_id).then(this.count--);
@@ -95917,7 +95914,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -95954,8 +95951,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 type: "App\\Notifications\\NewReply",
                 notifiable_type: "App\\User",
                 user_id: this.userID,
-                data: null
-            }
+                data: null,
+                name: User.name(),
+                path: '/question/' + this.questionID
+            },
+            question_user_id: this.userID
         };
     },
 
@@ -95964,9 +95964,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         submit: function submit() {
             var _this = this;
 
-            this.notitfys.data = '{"replyBy":"' + User.name() + '","question":"' + this.form.body + '","path":"' + this.questionID + '"}';
             axios.post('/api/question/' + this.questionID + '/reply', this.form).then(function (res) {
                 console.log(res.data.reply);
+                _this.notitfys.data = _this.form.body;
                 _this.form.body = '';
                 EventBus.$emit('newReply', res.data.reply);
 
@@ -95975,9 +95975,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             /* console.log(this.form) console.log(this.notitfys); */
         },
         notify: function notify() {
-            axios.post('/api/notify', this.notitfys).then(function (res) {
-                console.log(res);
-            });
+            if (this.question_user_id != User.id()) {
+                axios.post('/api/notify', this.notitfys).then(function (res) {
+                    console.log(res);
+                });
+            }
         }
     },
     watch: {
@@ -95985,10 +95987,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //console.log(n,o) // n is the new value, o is the old value.
             //console.log(n.user_id);
             this.form.question_id = n;
-            this.notitfys.data.path = n;
+            this.notitfys.path = '/question/' + n;
         },
         userID: function userID(n, o) {
             this.notitfys.user_id = n;
+            this.question_user_id = n;
         }
     }
 });
@@ -96877,7 +96880,8 @@ var User = function () {
         value: function hasToken() {
             var storedToken = __WEBPACK_IMPORTED_MODULE_1__AppStorage__["a" /* default */].getToken();
             if (storedToken) {
-                return __WEBPACK_IMPORTED_MODULE_0__Token__["a" /* default */].isValid(storedToken) ? true : false;
+                return true;
+                //return Token.isValid(storedToken) ? true : false;
             }
 
             return false;
@@ -97114,7 +97118,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -97150,6 +97154,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -97157,7 +97192,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             read: {},
             unread: {},
             unread_count: 0,
-            User_Id: User.id()
+            read_count: 0,
+            User_Id: User.id(),
+            data: null,
+            form: {
+                read_at: "1" }
         };
     },
     created: function created() {
@@ -97171,10 +97210,26 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             axios.get('/api/notif/' + this.User_Id).then(function (res) {
-                _this.read = res.data.Read;
+                _this.read = res.data.Read.reverse();
+                _this.read_count = res.data.Read.length;
                 _this.unread = res.data.Unread;
                 _this.unread_count = res.data.Unread.length;
             });
+        },
+        markAsRead: function markAsRead(notification) {
+            var _this2 = this;
+
+            console.log('/api/notifyupdate/' + notification.id);
+            axios.post('/api/notifyupdate/' + notification.id, this.form).then(function (res) {
+                _this2.unread.splice(notification, 1);
+                _this2.read.push(notification);
+                _this2.unread_count--;
+            });
+        }
+    },
+    computed: {
+        color: function color() {
+            return this.unread_count > 0 ? 'teal' : 'white';
         }
     }
 
@@ -97212,7 +97267,7 @@ var render = function() {
             [
               _c(
                 "v-icon",
-                { staticClass: "white--text", attrs: { color: "white" } },
+                { staticClass: "white--text", attrs: { color: _vm.color } },
                 [_vm._v("notification_important")]
               ),
               _vm._v(" " + _vm._s(_vm.unread_count) + "\n            ")
@@ -97220,39 +97275,148 @@ var render = function() {
             1
           ),
           _vm._v(" "),
-          _c(
-            "v-list",
-            [
-              _vm._l(_vm.unread, function(item) {
-                return _c(
-                  "v-list-tile",
-                  { key: item.id },
-                  [
-                    _c("v-list-tile-title", [
-                      _vm._v(_vm._s(item.data.question))
-                    ])
-                  ],
-                  1
-                )
-              }),
-              _vm._v(" "),
-              _c("v-divider"),
-              _vm._v(" "),
-              _vm._l(_vm.read, function(item) {
-                return _c(
-                  "v-list-tile",
-                  { key: item.id },
-                  [
-                    _c("v-list-tile-title", [
-                      _vm._v(_vm._s(item.data.question))
-                    ])
-                  ],
-                  1
-                )
-              })
-            ],
-            2
-          )
+          _vm.unread_count > 0 || _vm.read_count > 0
+            ? _c(
+                "v-list",
+                [
+                  _vm.unread_count > 0
+                    ? _c(
+                        "v-list-tile",
+                        { attrs: { color: "red" } },
+                        [
+                          _c("v-list-tile-title", [
+                            _vm._v("Unread (" + _vm._s(_vm.unread_count) + ")")
+                          ])
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    { staticClass: "d-inline-block elevation-12" },
+                    [
+                      _c(
+                        "v-list",
+                        { attrs: { dense: "" } },
+                        _vm._l(_vm.unread, function(item) {
+                          return _vm.unread_count > 0
+                            ? _c("v-list-tile", { key: item.id }, [
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      { attrs: { to: item.path } },
+                                      [
+                                        _c(
+                                          "v-list-tile-title",
+                                          {
+                                            on: {
+                                              click: function($event) {
+                                                _vm.markAsRead(item)
+                                              }
+                                            }
+                                          },
+                                          [
+                                            _vm._v(
+                                              _vm._s(
+                                                item.data.substring(0, 30)
+                                              ) + "..."
+                                            )
+                                          ]
+                                        )
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-list-tile-sub-title",
+                                      { staticClass: "text--primary" },
+                                      [_vm._v("said " + _vm._s(item.name))]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("v-divider")
+                                  ],
+                                  1
+                                )
+                              ])
+                            : _vm._e()
+                        }),
+                        1
+                      )
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _vm.read_count > 0
+                    ? _c(
+                        "v-list-tile",
+                        { attrs: { color: "green" } },
+                        [
+                          _c("v-list-tile-title", [
+                            _vm._v("Read (" + _vm._s(_vm.read_count) + ")")
+                          ])
+                        ],
+                        1
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("v-divider"),
+                  _vm._v(" "),
+                  _c(
+                    "v-card",
+                    { staticClass: "d-inline-block elevation-12" },
+                    [
+                      _c(
+                        "v-list",
+                        { attrs: { dense: "" } },
+                        _vm._l(_vm.read, function(item) {
+                          return _vm.read_count > 0
+                            ? _c("v-list-tile", { key: item.id }, [
+                                _c(
+                                  "div",
+                                  [
+                                    _c(
+                                      "router-link",
+                                      { attrs: { to: item.path } },
+                                      [
+                                        _c("v-list-tile-title", [
+                                          _vm._v(
+                                            _vm._s(item.data.substring(0, 30)) +
+                                              "..."
+                                          )
+                                        ])
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-list-tile-sub-title",
+                                      { staticClass: "text--primary" },
+                                      [_vm._v("said " + _vm._s(item.name))]
+                                    ),
+                                    _vm._v(" "),
+                                    _c("v-divider")
+                                  ],
+                                  1
+                                )
+                              ])
+                            : _vm._e()
+                        }),
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            : _vm._e()
         ],
         1
       )

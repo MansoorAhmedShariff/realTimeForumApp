@@ -17,9 +17,11 @@ class CreateNotifsTable extends Migration
             $table->increments('id');
             $table->string('type');
             $table->string('notifiable_type');
-            $table->integer('user_id')->unsigned();
+            $table->integer('user_id')->unsigned(); //ID Of User To Notify
             $table->text('data');
-            $table->timestamp('read_at')->nullable();
+            $table->text('name');
+            $table->text('path');
+            $table->boolean('read_at')->nullable();
             $table->timestamps();
         });
     }

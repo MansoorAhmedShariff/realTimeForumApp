@@ -9,8 +9,8 @@ Route::delete('like/{reply}', 'LikeController@Unlike');
 
 Route::get('/notif/{user}', 'NotifController@index');
 Route::post('/notify', 'NotifController@store');
-Route::post('/notifyupdate/{user}', 'NotifController@update');
-Route::delete('/notifdelete/{user}', 'NotifController@destroy');
+Route::post('/notifyupdate/{notif}', 'NotifController@update');
+Route::delete('/notifdelete/{notif}', 'NotifController@destroy');
 
 Route::group([
 
