@@ -72,14 +72,27 @@ export default {
         if(User.loggedIn()){
             this.getNotifications();
         }
+
+        Echo.channel('NotifChannel')
+        .listen('NotifEvent', (e) => {
+            //console.log(e, "Notification Check");
+            //console.log(e.reply.question_owner_id, e.reply.user_id);
+
+            if(this.User_Id == e.notif.user_id){
+                    console.log("Checking Notifs");
+                    this.getNotifications()
+                }
+        });
     },
     methods:{
         getNotifications(){
             axios.get('/api/notif/'+this.User_Id)
             .then(res => {
+                console.log("Getting Notifications");
+                
                 this.read = res.data.Read.reverse();
                 this.read_count = res.data.Read.length;
-                this.unread = res.data.Unread;
+                this.unread = res.data.Unread.reverse();
                 this.unread_count = res.data.Unread.length;
             })
         },
@@ -95,7 +108,7 @@ export default {
     },
     computed:{
         color(){
-            return this.unread_count > 0 ? 'teal' : 'white' 
+            return this.unread_count > 0 ? 'teal lighten-2' : 'white' 
         }
     }
 

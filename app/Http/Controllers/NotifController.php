@@ -6,6 +6,7 @@ use App\Model\Notif;
 use Illuminate\Http\Request;
 use App\User;
 use App\Http\Resources\NotifResource;
+use App\Events\NotifEvent;
 
 class NotifController extends Controller
 {
@@ -38,7 +39,8 @@ class NotifController extends Controller
     public function store(Request $request)
     {
         $notifications = Notif::create($request->all());
-
+        $notif = new NotifResource($notifications);
+        broadcast(new NotifEvent($notif))->toOthers();
         return response("Created Successfully", 200);
     }
 

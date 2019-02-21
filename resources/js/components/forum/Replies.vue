@@ -40,6 +40,23 @@ export default {
   },
     created(){
         this.listen()
+
+        Echo.channel('ReplyChannel')
+        .listen('ReplyEvent', (e) => {
+            console.log(e);
+            if(e.type == 1){
+                if(this.QuestionID == e.reply.question_id){
+                    this.replies.push(e.reply)
+                }
+            }
+            else if(e.type == 0){
+                for(let index = 0; index<this.content.length; index++){
+                    if(this.content[index].id == e.reply){
+                        this.content.splice(index, 1)
+                    }
+                }
+            }
+        });
     },
     methods:{
         listen(){

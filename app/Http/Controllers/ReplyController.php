@@ -7,6 +7,7 @@ use App\Model\Question;
 use Illuminate\Http\Request;
 use App\Http\Resources\ReplyResource;
 use App\Notifications\NewReplyNotification;
+use App\Events\ReplyEvent;
 
 class ReplyController extends Controller
 {
@@ -37,6 +38,8 @@ class ReplyController extends Controller
         //
         $reply = $question->replies()->create($request->all());
         $user = $question->user;
+        $rep = new ReplyResource($reply);
+        broadcast(new ReplyEvent($rep, 1))->toOthers();
         return response(["reply" => new ReplyResource($reply)], 200);
     }
 
@@ -76,6 +79,7 @@ class ReplyController extends Controller
     public function destroy(Question $question, Reply $reply)
     {
         $reply->delete();
+        broadcast(new ReplyEvent($reply->id, 0))->toOthers();
         return response()->json("Deleted Succssfully", 200);
         //
     }

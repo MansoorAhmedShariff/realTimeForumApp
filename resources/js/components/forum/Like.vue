@@ -14,12 +14,24 @@ export default {
         return{
             liked:this.data.liked,
             count:this.data.like_count,
-            u_id: User.id()
+            u_id: User.id(),
+            form:{
+                user_id: User.id()
+            }
         }
     },
     computed:{
         color(){
             return this.liked ? 'red' : 'grey';}
+    },
+    created(){
+        Echo.channel('likeChannel')
+        .listen('LikeEvent', (e) => {
+            console.log(e);
+            if(this.data.id == e.id){
+                e.type == 1? this.count ++ : this.count --
+            }
+        });
     },
     methods:{
         like(){
@@ -29,7 +41,7 @@ export default {
             }
         },
         increment(){
-            axios.post('/api/like/'+this.data.id, this.u_id)
+            axios.post('/api/like/'+this.data.id, this.form)
             .then(this.count ++)
         },
         decrement(){
