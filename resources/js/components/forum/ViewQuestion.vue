@@ -10,7 +10,10 @@
     <v-container>
     <replies :replies="question.replies"
     :QID="question.id"></replies>
-    <new-reply :questionID="question.id" :userID="question.user_id"></new-reply>
+    <new-reply v-if="loggedIn" :questionID="question.id" :userID="question.user_id"></new-reply>
+    <div class="mt-4" v-else>
+        <router-link to="/login">Please Login To Reply</router-link>
+    </div>
     </v-container>
     </div>
 </div>
@@ -32,6 +35,11 @@ export default {
     created(){
         this.editListen()
         this.getQuestion()
+    },
+    computed:{
+        loggedIn(){
+            return User.loggedIn()
+        }
     },
     methods:{
         editListen(){

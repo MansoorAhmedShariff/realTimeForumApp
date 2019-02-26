@@ -18,7 +18,7 @@
                 bottom
                 right
                 class="mb-1">
-                  {{question.replies_count}} Replies
+                  {{replyCount}} Replies
             </v-btn>
               </v-layout>
               
@@ -40,7 +40,9 @@ export default {
     props:['question'],
     data(){
         return{
-                own : User.own(this.question.id)
+                own : User.own(this.question.id),
+                replyCount : this.question.replies_count,
+                QuestionID : this.question.id
         }
     },
     watch: {
@@ -48,10 +50,35 @@ export default {
       //console.log(n,o) // n is the new value, o is the old value.
       //console.log(n.user_id);
       this.own = User.own(n.user_id);
+      this.replyCount = n.replies_count;
+      this.QuestionID = n.id
       
     }
   },
     created(){
+        EventBus.$on('newReply',()=>{
+            this.replyCount++
+        })
+
+        EventBus.$on('deleteReply',()=>{
+            this.replyCount--
+        })
+
+        Echo.channel('ReplyChannel')
+        .listen('ReplyEvent', (e) => {
+            console.log(e);
+            if(e.type == 1){
+                if(this.QuestionID == e.reply.question_id){
+                    //console.log(this.QuestionID, e.reply.question_id)
+                    this.replyCount++
+                }
+            }
+            else if(e.type == 0){
+               if(this.QuestionID == e.reply.question_id){
+                    this.replyCount--
+                }
+            }
+        });
         //console.log(this.own);
         
         //console.log(this.own)

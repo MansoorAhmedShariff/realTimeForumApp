@@ -51,7 +51,7 @@ export default {
             }
             else if(e.type == 0){
                 for(let index = 0; index<this.content.length; index++){
-                    if(this.content[index].id == e.reply){
+                    if(this.content[index].id == e.reply.id){
                         this.content.splice(index, 1)
                     }
                 }

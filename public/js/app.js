@@ -94315,7 +94315,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -94352,6 +94352,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 
 
@@ -94370,6 +94373,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.getQuestion();
     },
 
+    computed: {
+        loggedIn: function loggedIn() {
+            return User.loggedIn();
+        }
+    },
     methods: {
         editListen: function editListen() {
             var _this = this;
@@ -94755,7 +94763,7 @@ exports = module.exports = __webpack_require__(0)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -94808,7 +94816,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     props: ['question'],
     data: function data() {
         return {
-            own: User.own(this.question.id)
+            own: User.own(this.question.id),
+            replyCount: this.question.replies_count,
+            QuestionID: this.question.id
         };
     },
 
@@ -94817,9 +94827,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             //console.log(n,o) // n is the new value, o is the old value.
             //console.log(n.user_id);
             this.own = User.own(n.user_id);
+            this.replyCount = n.replies_count;
+            this.QuestionID = n.id;
         }
     },
     created: function created() {
+        var _this = this;
+
+        EventBus.$on('newReply', function () {
+            _this.replyCount++;
+        });
+
+        EventBus.$on('deleteReply', function () {
+            _this.replyCount--;
+        });
+
+        Echo.channel('ReplyChannel').listen('ReplyEvent', function (e) {
+            console.log(e);
+            if (e.type == 1) {
+                if (_this.QuestionID == e.reply.question_id) {
+                    //console.log(this.QuestionID, e.reply.question_id)
+                    _this.replyCount++;
+                }
+            } else if (e.type == 0) {
+                if (_this.QuestionID == e.reply.question_id) {
+                    _this.replyCount--;
+                }
+            }
+        });
         //console.log(this.own);
 
         //console.log(this.own)
@@ -94828,10 +94863,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         destroy: function destroy() {
-            var _this = this;
+            var _this2 = this;
 
             axios.delete('/api/question/' + this.question.id).then(function (res) {
-                return _this.$router.push('/forum');
+                return _this2.$router.push('/forum');
             }).catch(function (error) {
                 return console.log(error.response.data);
             });
@@ -94911,7 +94946,7 @@ var render = function() {
                 [
                   _vm._v(
                     "\r\n                  " +
-                      _vm._s(_vm.question.replies_count) +
+                      _vm._s(_vm.replyCount) +
                       " Replies\r\n            "
                   )
                 ]
@@ -95111,7 +95146,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 }
             } else if (e.type == 0) {
                 for (var index = 0; index < _this.content.length; index++) {
-                    if (_this.content[index].id == e.reply) {
+                    if (_this.content[index].id == e.reply.id) {
                         _this.content.splice(index, 1);
                     }
                 }
@@ -96104,12 +96139,23 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c("new-reply", {
-                    attrs: {
-                      questionID: _vm.question.id,
-                      userID: _vm.question.user_id
-                    }
-                  })
+                  _vm.loggedIn
+                    ? _c("new-reply", {
+                        attrs: {
+                          questionID: _vm.question.id,
+                          userID: _vm.question.user_id
+                        }
+                      })
+                    : _c(
+                        "div",
+                        { staticClass: "mt-4" },
+                        [
+                          _c("router-link", { attrs: { to: "/login" } }, [
+                            _vm._v("Please Login To Reply")
+                          ])
+                        ],
+                        1
+                      )
                 ],
                 1
               )

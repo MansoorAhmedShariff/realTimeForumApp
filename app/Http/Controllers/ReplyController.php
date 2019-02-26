@@ -78,8 +78,8 @@ class ReplyController extends Controller
      */
     public function destroy(Question $question, Reply $reply)
     {
+        broadcast(new ReplyEvent($reply, 0))->toOthers();
         $reply->delete();
-        broadcast(new ReplyEvent($reply->id, 0))->toOthers();
         return response()->json("Deleted Succssfully", 200);
         //
     }
